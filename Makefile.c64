@@ -1,0 +1,12 @@
+CL=cl65
+CFLAGS=-cpu 6502 -t c64
+LDFLAGS=-t c64
+OBJS=main.c scanner.c strings.c parser.c memory.c variables.c program.c keywords.c stack.c eval.c console_linux.c
+
+all: mbasic
+
+mbasic: $(OBJS)
+	$(CL) $(LDFLAGS) -o mbasic $(OBJS) 
+
+clean:
+	rm -rf mbasic *.o

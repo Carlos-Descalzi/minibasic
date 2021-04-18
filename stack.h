@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-void stack_init();
+void stack_init(void);
 void stack_push_int(int value);
 void stack_push_str(char* value);
 void stack_push(Value* value);

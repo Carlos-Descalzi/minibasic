@@ -48,7 +48,8 @@ static int parse_statement(char* input_buffer){
     return PARSER_OK;
 }
 static int parse_call(char* input_buffer){
-    for (int i=0;KEYWORDS[i].name;i++){
+    int i;
+    for (i=0;KEYWORDS[i].name;i++){
         if (!strcmp(KEYWORDS[i].name,token.svalue)){
             return KEYWORDS[i].handler(input_buffer);
         }

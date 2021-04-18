@@ -42,6 +42,6 @@ extern Value* IMMEDIATE_MEMORY;
 extern Variable VARIABLE_MEMORY[];
 extern char STRING_MEMORY[];
 
-void clear_memory();
+void clear_memory(void);
 
 #endif

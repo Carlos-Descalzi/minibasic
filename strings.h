@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-void strings_init();
+void strings_init(void);
 /**
  * Stores a new string into string table
  * If string already present will reuse existing

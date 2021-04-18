@@ -18,7 +18,8 @@ void program_add_line(int number, char* program_line){
 }
 
 void program_list(){
-    for (ProgramLine* line = PROGRAM_MEMORY;line->number;line = line->next){
+    ProgramLine* line;
+    for (line = PROGRAM_MEMORY;line->number;line = line->next){
         console_write_int(line->number);
         console_write_chr(' ');
         console_write_str(line->code);
@@ -27,7 +28,8 @@ void program_list(){
 }
 
 ProgramLine* program_find(int number){
-    for (ProgramLine* line = PROGRAM_MEMORY; line->number;line = line->next){
+    ProgramLine* line;
+    for (line = PROGRAM_MEMORY; line->number;line = line->next){
         if (line->number == number){
             return line;
         }

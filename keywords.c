@@ -38,13 +38,15 @@ Keyword KEYWORDS[] = {
 };
 
 static int do_print(char* input_buffer){
+    int i;
     Value value;
+    String* string;
 
     if (parse_expr(input_buffer) == PARSER_OK){
         stack_pop(&value);
         if (value.type == VT_STR){
-            String* string = (String*)value.svalue;
-            for (int i=0;i<string->length;i++){
+            string = (String*)value.svalue;
+            for (i=0;i<string->length;i++){
                 console_write_chr(string->string[i]);
             }
         } else if (value.type == VT_INT){

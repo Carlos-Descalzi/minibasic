@@ -34,6 +34,7 @@ int scanner_pos(void){
 }
 
 int scan(char* buff, Token* token){
+    char c;
     memset(sbuff,0,100);
     sptr = 0;
 
@@ -41,7 +42,7 @@ int scan(char* buff, Token* token){
 
     prev_ptr = ptr;
 
-    char c = forward(buff);
+    c = forward(buff);
 
     if (iseof(c)){
         return SCAN_EOF;
