@@ -13,7 +13,7 @@ static Token token;
 
 static int parse_program_line(char* input_buffer, unsigned short number);
 static int parse_statement(char* input_buffer);
-static int parse_call(char *input_buffer);
+//static int parse_call(char *input_buffer);
 static int parse_term(char *input_buffer);
 static int parse_factor(char* input_buffer);
 
@@ -41,20 +41,28 @@ static int parse_program_line(char* input_buffer, unsigned short number){
 }
 
 static int parse_statement(char* input_buffer){
-    if (token.type == TOKEN_ID){
-        return parse_call(input_buffer);
+    switch (token.type){
+        case TOKEN_PRINT:
+            return do_print(input_buffer);
+        case TOKEN_LIST:
+            return do_list(input_buffer);
+        case TOKEN_RUN:
+            return do_run(input_buffer);
+        case TOKEN_LET:
+            return do_let(input_buffer);
+        case TOKEN_GOTO:
+            return do_goto(input_buffer);
+        case TOKEN_FOR:
+            return do_for(input_buffer);
+        case TOKEN_NEXT:
+            return do_next(input_buffer);
+        case TOKEN_GOSUB:
+            return do_gosub(input_buffer);
+        case TOKEN_RETURN:
+            return do_return(input_buffer);
     }
 
-    return PARSER_OK;
-}
-static int parse_call(char* input_buffer){
-    int i;
-    for (i=0;KEYWORDS[i].name;i++){
-        if (!strcmp(KEYWORDS[i].name,token.svalue)){
-            return KEYWORDS[i].handler(input_buffer);
-        }
-    }
-    return PARSER_SYNTAX_ERROR;
+    return PARSER_SYNTAX_ERROR;//PARSER_OK;
 }
 
 int parse_expr(char *input_buffer){
@@ -143,26 +151,31 @@ static int parse_term(char *input_buffer){
 
 static int parse_factor(char* input_buffer){
     int r;
+    Value value;
 
     if ((r = scan(input_buffer, &token)) == SCAN_OK){
-        if (token.type == TOKEN_ID){
-            Value value;
-            variables_get(token.svalue,&value);
-            stack_push(&value);
-        } else if (token.type == TOKEN_NUMBER){
-            stack_push_int(token.ivalue);
-        } else if (token.type == TOKEN_STRING){
-            stack_push_str(token.svalue);
-        } else if (token.type == TOKEN_LPAR){
-            if ((r = parse_expr(input_buffer)) != PARSER_OK){
-                return r;
-            }
-            if (
-                (r = scan(input_buffer, &token)) != SCAN_OK 
-                || (token.type != TOKEN_RPAR)
-            ){
-                return PARSER_SYNTAX_ERROR;
-            }
+        switch(token.type){
+            case TOKEN_ID:
+                variables_get(token.svalue,&value);
+                stack_push(&value);
+                break;
+            case TOKEN_NUMBER:
+                stack_push_int(token.ivalue);
+                break;
+            case TOKEN_STRING:
+                stack_push_str(token.svalue);
+                break;
+            case TOKEN_LPAR:
+                if ((r = parse_expr(input_buffer)) != PARSER_OK){
+                    return r;
+                }
+                if (
+                    (r = scan(input_buffer, &token)) != SCAN_OK 
+                    || (token.type != TOKEN_RPAR)
+                ){
+                    return PARSER_SYNTAX_ERROR;
+                }
+                break;
         }
         return PARSER_OK;
     }

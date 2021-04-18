@@ -10,34 +10,8 @@
 
 static ProgramLine* next_line;
 
-static int do_print(char* input_buffer);
-static int do_list(char* input_buffer);
-static int do_run(char* input_buffer);
-static int do_pin(char* input_buffer);
-static int do_sleep(char* input_buffer);
-static int do_let(char* input_buffer);
-static int do_goto(char* input_buffer);
-static int do_for(char* input_buffer);
-static int do_next(char* input_buffer);
-static int do_gosub(char* input_buffer);
-static int do_return(char* input_buffer);
 
-Keyword KEYWORDS[] = {
-    { "print",  do_print    },
-    { "list",   do_list     },  
-    { "run",    do_run      },
-    { "pin",    do_pin      },
-    { "let",    do_let      },
-    { "goto",   do_goto     },
-    { "sleep",  do_sleep    },
-    { "for",    do_for      },
-    { "next",   do_next     },
-    { "gosub",  do_gosub    },
-    { "return", do_return   },
-    { NULL,     NULL        }
-};
-
-static int do_print(char* input_buffer){
+int do_print(char* input_buffer){
     int i;
     Value value;
     String* string;
@@ -61,11 +35,11 @@ static int do_print(char* input_buffer){
 
 
 
-static int do_list(char* input_buffer){
+int do_list(char* input_buffer){
     program_list();
     return PARSER_OK;
 }
-static int do_run(char* input_buffer){
+int do_run(char* input_buffer){
     int r;
     char* code;
     next_line = program_first();
@@ -80,10 +54,10 @@ static int do_run(char* input_buffer){
 
     return PARSER_OK;
 }
-static int do_pin(char* input_buffer){
+int do_pin(char* input_buffer){
     return PARSER_OK;
 }
-static int do_let(char* input_buffer){
+int do_let(char* input_buffer){
     Token token;
     Value name;
     Value value;
@@ -103,10 +77,10 @@ static int do_let(char* input_buffer){
     }
     return r;
 }
-static int do_sleep(char* input_buffer){
+int do_sleep(char* input_buffer){
     return PARSER_OK;
 }
-static int do_goto(char* input_buffer){
+int do_goto(char* input_buffer){
     int r;
     if ((r = parse_expr(input_buffer)) == PARSER_OK){
         Value value;
@@ -119,7 +93,7 @@ static int do_goto(char* input_buffer){
     }
     return r;
 }
-static int do_for(char* input_buffer){
+int do_for(char* input_buffer){
     int r;
     Token token;
     Value name;
@@ -150,7 +124,7 @@ static int do_for(char* input_buffer){
     stack_push_int(next_line->number);
     return PARSER_OK;
 }
-static int do_next(char* input_buffer){
+int do_next(char* input_buffer){
     Token token;
     Value value;
     Value line;
@@ -178,7 +152,7 @@ static int do_next(char* input_buffer){
 
     return PARSER_OK;
 }
-static int do_gosub(char* input_buffer){
+int do_gosub(char* input_buffer){
     int r;
     if ((r = parse_expr(input_buffer)) == PARSER_OK){
         Value value;
@@ -192,7 +166,7 @@ static int do_gosub(char* input_buffer){
     }
     return PARSER_OK;
 }
-static int do_return(char* input_buffer){
+int do_return(char* input_buffer){
     Value value;
     stack_pop(&value);
     next_line = program_find(value.ivalue);

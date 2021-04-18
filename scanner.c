@@ -55,8 +55,26 @@ int scan(char* buff, Token* token){
         }
         sbuff[sptr] = 0;
 
-        if (!strcmp(sbuff,"to")){
+        if (!strcmp(sbuff,"print")){
+            token->type = TOKEN_PRINT;
+        } else if (!strcmp(sbuff,"list")){
+            token->type = TOKEN_LIST;
+        } else if (!strcmp(sbuff,"run")){
+            token->type = TOKEN_RUN;
+        } else if (!strcmp(sbuff,"let")){
+            token->type = TOKEN_LET;
+        } else if (!strcmp(sbuff,"goto")){
+            token->type = TOKEN_GOTO;
+        } else if (!strcmp(sbuff,"for")){
+            token->type = TOKEN_FOR;
+        } else if (!strcmp(sbuff,"to")){
             token->type = TOKEN_TO;
+        } else if (!strcmp(sbuff,"next")){
+            token->type = TOKEN_NEXT;
+        } else if (!strcmp(sbuff,"gosub")){
+            token->type = TOKEN_GOSUB;
+        } else if (!strcmp(sbuff,"return")){
+            token->type = TOKEN_RETURN;
         } else if (!strcmp(sbuff,"if")){
             token->type = TOKEN_IF;
         } else if (!strcmp(sbuff,"then")){
